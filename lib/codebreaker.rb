@@ -1,0 +1,5 @@
+require 'codebreaker/game'
+require 'codebreaker/guess'
+require 'codebreaker/guess_checker'
+require 'codebreaker/player'
+require 'codebreaker/output'
