@@ -37,7 +37,6 @@ module Codebreaker
          elsif @number_of_attempts==MAX_NUMBER_OF_ATTEMPTS
            loose(string) #loose
           end
-
     end
 
     def checker_for_win(string)
@@ -64,8 +63,8 @@ module Codebreaker
     end
 
     def loose (string)
-         write_results_to_file(:status=>"loose")
-         checker_for_loose(string)
+      write_results_to_file(:status=>"lost")
+      checker_for_loose(string)
     end
 
     def continue(string)

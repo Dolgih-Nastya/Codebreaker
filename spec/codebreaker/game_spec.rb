@@ -92,9 +92,9 @@ module Codebreaker
         end
 
 
-        it "should not have string when game is not over"  do
+        it "should have string when game is not over"  do
           string = game.result_of(user_guess).string
-          expect(string).to be_nil
+          expect(string).not_to be_nil
         end
 
         it "should have number of attempts even the game is not over" do
@@ -119,7 +119,7 @@ module Codebreaker
         let(:user_guess){Guess.new "0000"}
         let! (:checker) {GuessChecker.new}
         before(:each) {
-          6.times do
+          5.times do
           @checker=game.result_of(user_guess)
           end
         }
@@ -131,11 +131,15 @@ module Codebreaker
           expect(@checker.number_of_attempts).to eq 5
         end
 
-        it "should not have string "  do
-          expect(@checker.string).to be_nil
+        it "should have string "  do
+          expect(@checker.string).not_to be_nil
         end
 
         it "results of lost should be written to file " do
+          game=Game.new(player)
+          4.times do
+            @checker=game.result_of(user_guess)
+          end
           game.should_receive(:write_results_to_file).with(:status=>"lost")
           game.result_of(user_guess)
         end
