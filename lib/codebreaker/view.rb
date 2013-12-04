@@ -1,5 +1,7 @@
 module Codebreaker
-class Output
+class View
+  attr_reader :player
+  attr_reader :game
   def start_game
     create_player
     play
@@ -12,7 +14,7 @@ class Output
   end
 
   def play
-    puts "Would you like to play with me, #{@player.name}?"
+    puts "Would you like to play with me, #{player.name}?"
     answer=gets.chomp
     while (answer=="y") do
       play_one_game
@@ -22,11 +24,11 @@ class Output
     puts "Game is over"
   end
 
-  def make_guess(game)
+  def make_guess
     puts "Input code"
     guess=Guess.new(gets.chomp)
     if guess.valid?
-      checker=game.result_of(guess)
+      checker=@game.result_of(guess)
     else
       checker=GuessChecker.new(:message=>'Game is continue')
       puts "Your guess is invalid. Your guess should contain four numbers from 1 to 6"
@@ -34,21 +36,21 @@ class Output
     checker
   end
 
-  def ask_for_hint(game)
+  def ask_for_hint
     puts "Would you like to use hint?"
     answer= gets.chomp
     if answer =="y"
-      puts game.take_hint
+      puts @game.take_hint
     end
   end
 
   def play_one_game
-    game=Game.new(@player)
+    @game=Game.new(@player)
     begin
-      if game.can_use_hint?
-        ask_for_hint(game)
+      if @game.can_use_hint?
+        ask_for_hint
       end
-      checker=make_guess(game)
+      checker=make_guess
       puts checker.result
     end while (checker.message=='Game is continue')
   end

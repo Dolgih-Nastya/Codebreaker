@@ -92,7 +92,7 @@ module Codebreaker
     end
 
     def take_digit(position)
-      @number[position]
+      number[position]
     end
 
     private

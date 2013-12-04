@@ -29,29 +29,44 @@ module Codebreaker
     end
 
     context "code-breaker tries to guess number" do
-      it "result of right guess should be ++++"   do
-        user_guess = Guess.new game.number
-        expect(game.string_for(user_guess)).to eq("++++")
+      before {game.stub(:number).and_return("1234")}
+      it "should return right string for guesses" do
+        user_guess = Guess.new "1256"
+        expect(game.string_for(user_guess)).to eq"++"
       end
 
-      it "result of wrong guess should be empty string" do
-        wrong_number="0000"
-        user_guess = Guess.new wrong_number
+      it "should return right string for guesses" do
+        user_guess = Guess.new "1356"
+        expect(game.string_for(user_guess)).to eq"+-"
+      end
+
+      it "should return right string for guesses" do
+        user_guess = Guess.new "5555"
         expect(game.string_for(user_guess)).to be_empty
       end
 
-      it "result of string than matches not exactly should contain -" do
-         new_number=game.number.reverse
-         new_number[3]="0"
-         user_guess = Guess.new new_number
-         expect(game.string_for(user_guess)).to include "-"
+      it "should return right string for guesses" do
+        user_guess = Guess.new "1234"
+        expect(game.string_for(user_guess)).to eq"++++"
       end
 
-      it "result of string that contain two symbols than matches exactly contain ++ "     do
-          new_number= game.number.clone
-          new_number[2], new_number[3]="0", "0"
-          user_guess = Guess.new new_number
-          expect(game.string_for(user_guess)).to eq "++"
+      it "should return right string for guesses" do
+        user_guess = Guess.new "1111"
+        expect(game.string_for(user_guess)).to eq"+---"
+      end
+
+      it "should return right string for guesses" do
+        user_guess = Guess.new "4321"
+        expect(game.string_for(user_guess)).to eq"----"
+      end
+      it "should return right string for guesses" do
+        user_guess = Guess.new "6543"
+        expect(game.string_for(user_guess)).to eq"--"
+      end
+
+      it "should return right string for guesses" do
+        user_guess = Guess.new "1243"
+        expect(game.string_for(user_guess)).to eq"++--"
       end
 
       context  "code-breaker wins game " do
@@ -103,7 +118,7 @@ module Codebreaker
         end
       end
 
-      context "number of attempts should increase while codebreaker making guesses" do
+      context " should increase number of attempts while codebreaker is making guesses" do
         let(:user_guess){Guess.new "0000"}
         it "number of used attempts should increase by 1"  do
           expect{game.result_of(user_guess)}.to change{game.number_of_attempts}.from(0).to(1)
@@ -135,7 +150,7 @@ module Codebreaker
           expect(@checker.string).not_to be_nil
         end
 
-        it "results of lost should be written to file " do
+        it "should write loosing result to file " do
           game=Game.new(player)
           4.times do
             @checker=game.result_of(user_guess)
@@ -168,12 +183,7 @@ module Codebreaker
           expect(digit).to eq(game.number[2])
         end
 
-        it "message for hint should have hint"  do
-          message=game.take_hint
-          expect(message).to include "digit in the secret number"
-        end
-
-        it "message for hint should have right message for hint"   do
+        it "message for hint should have be right "   do
           digit="2"
           game.stub(:take_digit).and_return(digit[0].ord)
           message=game.take_hint

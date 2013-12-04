@@ -7,7 +7,7 @@ module Codebreaker
          expect(player.name).not_to be_empty
        end
 
-       it "should have name like param" do
+       it "should have real user name if it was set" do
          player=Player.new "Nastya"
          expect(player.name).to eq "Nastya"
        end
