@@ -24,6 +24,15 @@ class View
     puts "Game is over"
   end
 
+  def play_one_game
+    @game=Game.new(@player)
+    begin
+      ask_for_hint  if @game.can_use_hint?
+      checker=make_guess
+      puts checker.result
+    end while (checker.message=='Game is continue')
+  end
+
   def make_guess
     puts "Input code"
     guess=Guess.new(gets.chomp)
@@ -44,16 +53,7 @@ class View
     end
   end
 
-  def play_one_game
-    @game=Game.new(@player)
-    begin
-      if @game.can_use_hint?
-        ask_for_hint
-      end
-      checker=make_guess
-      puts checker.result
-    end while (checker.message=='Game is continue')
-  end
+
 
  end
 end
